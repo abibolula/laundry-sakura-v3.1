@@ -671,26 +671,39 @@ footer {
 .nota-footer-text { text-align:center; margin-top:14px; font-family:var(--font-jp); font-size:16px; color:#C62828; letter-spacing:2px; }
 .nota-footer-sub { text-align:center; font-size:11px; color:#aaa; margin-top:4px; }
 .nota-actions {
-  display:flex; gap:8px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
   padding:14px 22px 20px;
   border-top:1px solid #eee;
 }
 .nota-actions button {
-  flex:1; padding:11px;
-  border-radius:10px; font-size:13px; font-weight:600;
+  flex:1; padding:11px 8px;
+  border-radius:10px; font-size:12px; font-weight:600;
   cursor:pointer; transition:all var(--transition);
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  line-height:1.3;
 }
+.nota-actions button:active { transform:scale(0.97); }
+.nota-actions .btn-full { grid-column:1/-1; }
 .nota-save-btn {
   background:linear-gradient(135deg,#C62828,#EF5350);
   color:#fff; border:none;
   box-shadow:0 4px 14px rgba(198,40,40,0.3);
 }
-.nota-save-btn:hover { transform:translateY(-1px); }
+.nota-save-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(198,40,40,0.4); }
 .nota-wa-btn {
   background:linear-gradient(135deg,#25D366,#128C7E);
   color:#fff; border:none;
+  box-shadow:0 4px 14px rgba(37,211,102,0.25);
 }
-.nota-wa-btn:hover { transform:translateY(-1px); }
+.nota-wa-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,211,102,0.35); }
+.nota-invoice-btn {
+  background:linear-gradient(135deg,#1565C0,#1976D2);
+  color:#fff; border:none;
+  box-shadow:0 4px 14px rgba(21,101,192,0.25);
+}
+.nota-invoice-btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(21,101,192,0.35); }
 
 /* ===== LOADING ===== */
 #loading {
@@ -764,6 +777,118 @@ footer {
 }
 .ac-mark { color:var(--red); font-weight:700; }
 
+/* ===== EXPORT MODAL ===== */
+#export-modal {
+  position:fixed; inset:0; z-index:300;
+  background:rgba(0,0,0,0.6);
+  display:none; align-items:flex-end; justify-content:center;
+  backdrop-filter:blur(6px);
+  padding:20px;
+}
+#export-modal.show { display:flex; }
+@media(min-width:500px) {
+  #export-modal { align-items:center; }
+}
+.export-sheet {
+  background:var(--card);
+  border-radius:var(--radius-lg) var(--radius-lg) var(--radius) var(--radius);
+  width:100%; max-width:440px;
+  padding:24px 20px 28px;
+  box-shadow:var(--shadow-lg);
+  animation:slideUp .3s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+@media(min-width:500px) {
+  .export-sheet { border-radius:var(--radius-lg); }
+}
+@keyframes slideUp {
+  from { transform:translateY(40px); opacity:0; }
+  to { transform:translateY(0); opacity:1; }
+}
+.export-close {
+  position:absolute; top:14px; right:14px;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--gray-light); border:1px solid var(--border);
+  color:var(--text3); font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all var(--transition);
+}
+.export-close:hover { background:var(--red); color:#fff; }
+.export-title {
+  font-size:17px; font-weight:700;
+  margin-bottom:4px;
+}
+.export-sub { font-size:12.5px; color:var(--text3); margin-bottom:18px; }
+.export-preview {
+  background:var(--gray-light);
+  border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  padding:12px 14px;
+  margin-bottom:16px;
+  font-size:12px; color:var(--text2);
+  line-height:1.8;
+}
+.export-preview strong { color:var(--text); }
+.export-range {
+  display:flex; gap:8px; margin-bottom:14px; align-items:center;
+}
+.export-range label { font-size:12px; font-weight:600; color:var(--text3); white-space:nowrap; }
+.export-range input {
+  flex:1; background:var(--input-bg);
+  border:1.5px solid var(--input-border);
+  border-radius:8px; padding:8px 10px;
+  font-size:12.5px; color:var(--text);
+}
+.export-range input:focus { border-color:var(--red); }
+.export-btns { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+.export-btn {
+  padding:13px 10px;
+  border-radius:var(--radius-sm);
+  font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  transition:all var(--transition); cursor:pointer;
+  border:none;
+}
+.export-btn:active { transform:scale(0.97); }
+.export-btn-csv {
+  background:linear-gradient(135deg,#1B5E20,#388E3C);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(56,142,60,0.3);
+}
+.export-btn-csv:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(56,142,60,0.4); }
+.export-btn-excel {
+  background:linear-gradient(135deg,#1565C0,#1976D2);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(21,101,192,0.3);
+}
+.export-btn-excel:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(21,101,192,0.4); }
+.export-summary-grid {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:8px; margin-bottom:16px;
+}
+.export-sum-item {
+  background:var(--gray-light);
+  border-radius:10px; padding:10px 8px; text-align:center;
+  border:1px solid var(--border);
+}
+.export-sum-val { font-size:16px; font-weight:700; color:var(--text); }
+.export-sum-lbl { font-size:10px; color:var(--text3); margin-top:2px; text-transform:uppercase; letter-spacing:0.4px; }
+
+/* ===== BTN EXPORT in filter bar ===== */
+.btn-export {
+  background:linear-gradient(135deg,#1565C0,#1976D2);
+  color:#fff;
+  border:none;
+  padding:9px 14px;
+  font-size:12px; font-weight:600;
+  border-radius:var(--radius-sm);
+  display:flex; align-items:center; gap:5px;
+  box-shadow:0 3px 10px rgba(21,101,192,0.25);
+  transition:all var(--transition); cursor:pointer; flex:none;
+}
+.btn-export:hover { transform:translateY(-1px); box-shadow:0 5px 16px rgba(21,101,192,0.35); }
+.btn-export:active { transform:scale(0.97); }
+
 /* ===== DATE INPUT ===== */
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter:invert(0.5);
@@ -811,7 +936,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     <div id="nota-content"></div>
     <div class="nota-actions">
       <button class="nota-save-btn" onclick="saveNotaJpg()">💾 Simpan JPG</button>
-      <button class="nota-wa-btn" onclick="sendNotaWa()">📲 Kirim WA</button>
+      <button class="nota-wa-btn" onclick="sendWAMessage()">💬 Kirim WA</button>
+      <button class="nota-invoice-btn btn-full" onclick="sendInvoiceWA()">📲 Kirim Invoice (JPG)</button>
     </div>
   </div>
 </div>
@@ -1024,6 +1150,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
       <input type="date" id="filter-from" onchange="renderOrders()">
       <input type="date" id="filter-to" onchange="renderOrders()">
       <button class="btn btn-outline" style="padding:9px 14px;font-size:12px;flex:none" onclick="resetFilter()">Reset</button>
+      <button class="btn-export" onclick="openExport()">📊 Export</button>
     </div>
     <div class="filter-chips">
       <div class="chip active" data-status="all" onclick="filterChip(this)">Semua</div>
@@ -1061,6 +1188,46 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 <!-- Hidden canvas for JPG export -->
 <canvas id="nota-canvas" style="display:none"></canvas>
+
+<!-- ===== EXPORT MODAL ===== -->
+<div id="export-modal">
+  <div class="export-sheet">
+    <button class="export-close" onclick="closeExport()">✕</button>
+    <div class="export-title">📊 Export Laporan</div>
+    <div class="export-sub">Download transaksi sebagai file spreadsheet</div>
+
+    <!-- Ringkasan -->
+    <div class="export-summary-grid" id="export-summary-grid"></div>
+
+    <!-- Range Tanggal -->
+    <div class="export-range">
+      <label>Dari</label>
+      <input type="date" id="export-from">
+      <label>s/d</label>
+      <input type="date" id="export-to">
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button onclick="setExportRange('week')" class="chip" style="font-size:11px;padding:5px 10px">1 Minggu</button>
+      <button onclick="setExportRange('month')" class="chip" style="font-size:11px;padding:5px 10px">Bulan Ini</button>
+      <button onclick="setExportRange('all')" class="chip" style="font-size:11px;padding:5px 10px">Semua Data</button>
+    </div>
+
+    <!-- Preview info -->
+    <div class="export-preview" id="export-preview-text">—</div>
+
+    <!-- Tombol export -->
+    <div class="export-btns">
+      <button class="export-btn export-btn-csv" onclick="doExport('csv')">
+        <span style="font-size:18px">📄</span>
+        <div><div>Export CSV</div><div style="font-size:10px;font-weight:400;opacity:.85">Untuk Google Sheets</div></div>
+      </button>
+      <button class="export-btn export-btn-excel" onclick="doExport('excel')">
+        <span style="font-size:18px">📊</span>
+        <div><div>Export Excel</div><div style="font-size:10px;font-weight:400;opacity:.85">File .xls siap buka</div></div>
+      </button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ======================================
@@ -1598,63 +1765,98 @@ async function saveNotaJpg() {
   }
 }
 
-// ===== SEND NOTA WA =====
-async function sendNotaWa() {
-  // Get current nota data from DOM
-  const id = currentNotaId;
-  let t = null;
-  if (id) {
-    t = transactions.find(x => x.id === id);
-  }
-  if (!t) {
-    // from form
-    const nama = document.getElementById('f-nama').value.trim();
-    const wa = document.getElementById('f-wa').value.trim();
-    const jenis = document.getElementById('f-jenis').value;
-    const berat = parseFloat(document.getElementById('f-berat').value) || 0;
-    const harga = parseFloat(document.getElementById('f-harga').value) || 0;
-    const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
-    const subtotal = berat * harga;
-    const disc = subtotal * (diskon/100);
-    const total = subtotal - disc;
-    t = { nama, wa, jenis, berat, harga, diskon, subtotal, disc, total, status:'Diproses', masuk: document.getElementById('f-masuk').value, estimasi: document.getElementById('f-estimasi').value, catatan: document.getElementById('f-catatan').value };
-  }
+// ===== SEND WA MESSAGE (teks saja) =====
+function sendWAMessage() {
+  const t = getCurrentNotaData();
+  if (!t) return;
+  const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
+  const msg = buildWAMsg(t, mode);
+  const noWA = (t.wa || '').replace(/\D/g,'');
+  if (!noWA) { toast('⚠️ Nomor WA tidak tersedia', 'warn'); return; }
+  window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
+  toast('💬 Membuka WhatsApp...', 'success');
+  playClick();
+}
 
-  // Try to send image via WA
+// ===== SEND INVOICE WA (JPG dulu lalu buka WA) =====
+async function sendInvoiceWA() {
+  const t = getCurrentNotaData();
+  if (!t) return;
+  const noWA = (t.wa || '').replace(/\D/g,'');
+  if (!noWA) { toast('⚠️ Nomor WA tidak tersedia', 'warn'); return; }
+
+  toast('⏳ Membuat invoice JPG...', 'info');
   try {
     await drawNotaCanvas();
     const canvas = document.getElementById('nota-canvas');
     canvas.toBlob(blob => {
-      if (!blob) { fallbackWA(t); return; }
-      // Check Web Share API
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob],'nota.jpg',{type:'image/jpeg'})] })) {
-        const file = new File([blob], `nota-sakura-${Date.now()}.jpg`, { type:'image/jpeg' });
-        navigator.share({ files:[file], title:'Nota Sakura Laundry' }).catch(() => fallbackWA(t));
+      if (!blob) { toast('❌ Gagal membuat JPG', 'warn'); return; }
+      const file = new File([blob], `invoice-sakura-${Date.now()}.jpg`, { type:'image/jpeg' });
+
+      // Coba Web Share API (support di mobile Chrome/Safari)
+      if (navigator.share && navigator.canShare && navigator.canShare({ files:[file] })) {
+        navigator.share({
+          files: [file],
+          title: 'Invoice Sakura Laundry',
+          text: `Invoice laundry untuk ${t.nama}`
+        }).then(() => {
+          toast('📲 Invoice berhasil dibagikan!', 'success');
+        }).catch(() => {
+          // User cancel atau gagal — fallback download + buka WA
+          downloadAndOpenWA(blob, t, noWA);
+        });
       } else {
-        // Fallback: download + open WA
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `nota-sakura.jpg`;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        setTimeout(() => fallbackWA(t), 800);
-        toast('💾 Gambar terdownload, buka WA manual', 'info');
+        // Desktop atau browser tidak support share file
+        downloadAndOpenWA(blob, t, noWA);
       }
     }, 'image/jpeg', 0.95);
   } catch(e) {
-    fallbackWA(t);
+    console.error(e);
+    toast('❌ Error: '+e.message, 'warn');
   }
 }
 
-function fallbackWA(t) {
-  const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
-  const msg = buildWAMsg(t, mode);
-  const noWA = (t.wa || '').replace(/\D/g,'');
-  if (noWA) {
+function downloadAndOpenWA(blob, t, noWA) {
+  // Download JPG dulu
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `invoice-sakura-${t.nama.replace(/\s+/g,'-')}.jpg`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('💾 Invoice terdownload — silakan kirim manual ke WA', 'info');
+  // Buka WA setelah 1 detik
+  setTimeout(() => {
+    const msg = `Halo ${t.nama}, terlampir invoice laundry dari *Sakura Laundry* 🌸\n_ありがとうございます_`;
     window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
-  } else {
-    toast('⚠️ Nomor WA tidak tersedia', 'warn');
+  }, 1000);
+}
+
+// ===== HELPER: get current nota data =====
+function getCurrentNotaData() {
+  if (currentNotaId) {
+    const t = transactions.find(x => x.id === currentNotaId);
+    if (t) return t;
   }
+  // from form
+  const nama = document.getElementById('f-nama').value.trim();
+  const wa = document.getElementById('f-wa').value.trim();
+  const jenis = document.getElementById('f-jenis').value;
+  const berat = parseFloat(document.getElementById('f-berat').value) || 0;
+  const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+  const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+  const subtotal = berat * harga;
+  const disc = subtotal * (diskon/100);
+  const total = subtotal - disc;
+  return {
+    nama, wa, jenis, berat, harga, diskon,
+    subtotal, disc, total,
+    status: 'Diproses',
+    masuk: document.getElementById('f-masuk').value,
+    estimasi: document.getElementById('f-estimasi').value,
+    catatan: document.getElementById('f-catatan').value
+  };
 }
 
 // ===== DRAW CANVAS NOTA =====
@@ -1772,6 +1974,238 @@ function printNotaById(id) {
   currentNotaId = id;
   showNota(t);
 }
+
+// ===== EXPORT EXCEL / CSV =====
+function openExport() {
+  // Default range: current month
+  const now = new Date();
+  const y = now.getFullYear(), m = now.getMonth();
+  const firstDay = new Date(y, m, 1).toISOString().split('T')[0];
+  const lastDay = new Date(y, m+1, 0).toISOString().split('T')[0];
+  document.getElementById('export-from').value = firstDay;
+  document.getElementById('export-to').value = lastDay;
+  updateExportPreview();
+  document.getElementById('export-modal').classList.add('show');
+  playClick();
+}
+function closeExport() {
+  document.getElementById('export-modal').classList.remove('show');
+}
+function setExportRange(range) {
+  const now = new Date();
+  let from, to = now.toISOString().split('T')[0];
+  if (range === 'week') {
+    const d = new Date(); d.setDate(d.getDate()-6);
+    from = d.toISOString().split('T')[0];
+  } else if (range === 'month') {
+    from = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    to = new Date(now.getFullYear(), now.getMonth()+1, 0).toISOString().split('T')[0];
+  } else {
+    // all
+    if (transactions.length === 0) { from = to; }
+    else {
+      const dates = transactions.map(t=>t.masuk).filter(Boolean).sort();
+      from = dates[0];
+      to = dates[dates.length-1];
+    }
+  }
+  document.getElementById('export-from').value = from;
+  document.getElementById('export-to').value = to;
+  updateExportPreview();
+  playClick();
+}
+
+function getExportData() {
+  const from = document.getElementById('export-from').value;
+  const to = document.getElementById('export-to').value;
+  return transactions.filter(t => {
+    if (from && t.masuk < from) return false;
+    if (to && t.masuk > to) return false;
+    return true;
+  });
+}
+
+function updateExportPreview() {
+  const data = getExportData();
+  const totalRevenue = data.reduce((s,t)=>s+t.total,0);
+  const selesai = data.filter(t=>t.status==='Selesai'||t.status==='Diambil').length;
+  const proses = data.filter(t=>t.status==='Diproses'||t.status==='Dicuci').length;
+
+  // Summary grid
+  document.getElementById('export-summary-grid').innerHTML = `
+    <div class="export-sum-item">
+      <div class="export-sum-val">${data.length}</div>
+      <div class="export-sum-lbl">Transaksi</div>
+    </div>
+    <div class="export-sum-item">
+      <div class="export-sum-val" style="font-size:12px">${rupiahShort(totalRevenue)}</div>
+      <div class="export-sum-lbl">Pendapatan</div>
+    </div>
+    <div class="export-sum-item">
+      <div class="export-sum-val">${selesai}</div>
+      <div class="export-sum-lbl">Selesai</div>
+    </div>
+  `;
+
+  const from = document.getElementById('export-from').value;
+  const to = document.getElementById('export-to').value;
+  document.getElementById('export-preview-text').innerHTML = data.length === 0
+    ? '⚠️ Tidak ada data pada rentang tanggal ini'
+    : `<strong>${data.length} transaksi</strong> dari <strong>${formatDate(from)}</strong> s/d <strong>${formatDate(to)}</strong><br>
+       Total pendapatan: <strong style="color:var(--red)">${rupiah(totalRevenue)}</strong> &nbsp;·&nbsp;
+       Diproses: <strong>${proses}</strong> &nbsp;·&nbsp; Selesai: <strong>${selesai}</strong>`;
+}
+
+// Re-render preview on date change
+document.addEventListener('change', e => {
+  if (e.target.id === 'export-from' || e.target.id === 'export-to') updateExportPreview();
+});
+
+function doExport(type) {
+  const data = getExportData();
+  if (data.length === 0) { toast('⚠️ Tidak ada data untuk diexport', 'warn'); return; }
+
+  const from = document.getElementById('export-from').value;
+  const to = document.getElementById('export-to').value;
+  const filename = `sakura-laundry_${from}_${to}`;
+
+  if (type === 'csv') exportCSV(data, filename);
+  else exportExcel(data, filename);
+
+  closeExport();
+  toast(`✅ File ${type.toUpperCase()} berhasil didownload!`, 'success');
+  playClick();
+}
+
+function exportCSV(data, filename) {
+  const headers = ['No','ID Transaksi','Tanggal Masuk','Nama Pelanggan','No WA','Jenis Laundry',
+    'Berat (kg)','Harga/Kg','Subtotal','Diskon (%)','Total Bayar','Estimasi Selesai','Status','Catatan'];
+
+  const rows = data.map((t,i) => [
+    i+1,
+    t.id || '',
+    t.masuk || '',
+    t.nama || '',
+    t.wa || '',
+    t.jenis || '',
+    t.berat || 0,
+    t.harga || 0,
+    Math.round(t.subtotal || 0),
+    t.diskon || 0,
+    Math.round(t.total || 0),
+    t.estimasi || '',
+    t.status || '',
+    (t.catatan || '').replace(/"/g,"'")
+  ]);
+
+  // BOM for Excel UTF-8 compatibility
+  let csv = '\uFEFF';
+  csv += headers.map(h => `"${h}"`).join(',') + '\n';
+  rows.forEach(r => {
+    csv += r.map(v => `"${v}"`).join(',') + '\n';
+  });
+
+  // Append summary rows
+  const totalRevenue = data.reduce((s,t)=>s+t.total,0);
+  csv += '\n';
+  csv += `"","","","","","","","","","","TOTAL PENDAPATAN","${Math.round(totalRevenue)}","",""\n`;
+  csv += `"","","","","","","","","","","TOTAL TRANSAKSI","${data.length}","",""\n`;
+
+  downloadBlob(csv, filename + '.csv', 'text/csv;charset=utf-8;');
+}
+
+function exportExcel(data, filename) {
+  // Build HTML table that Excel can open natively as .xls
+  const headers = ['No','ID Transaksi','Tanggal Masuk','Nama Pelanggan','No WA','Jenis Laundry',
+    'Berat (kg)','Harga/Kg','Subtotal','Diskon (%)','Total Bayar','Estimasi Selesai','Status','Catatan'];
+
+  const statusColor = {
+    'Diproses':'#FFF3E0','Dicuci':'#E3F2FD','Selesai':'#E8F5E9','Diambil':'#F3E5F5'
+  };
+
+  let trs = data.map((t,i) => {
+    const bg = statusColor[t.status] || '#fff';
+    return `<tr>
+      <td style="text-align:center">${i+1}</td>
+      <td>${t.id||''}</td>
+      <td>${t.masuk||''}</td>
+      <td style="font-weight:bold">${t.nama||''}</td>
+      <td>${t.wa||''}</td>
+      <td>${t.jenis||''}</td>
+      <td style="text-align:right">${t.berat||0}</td>
+      <td style="text-align:right">${Math.round(t.harga||0).toLocaleString('id-ID')}</td>
+      <td style="text-align:right">${Math.round(t.subtotal||0).toLocaleString('id-ID')}</td>
+      <td style="text-align:center">${t.diskon||0}%</td>
+      <td style="text-align:right;font-weight:bold;color:#C62828">${Math.round(t.total||0).toLocaleString('id-ID')}</td>
+      <td>${t.estimasi||''}</td>
+      <td style="background:${bg};text-align:center">${t.status||''}</td>
+      <td>${t.catatan||''}</td>
+    </tr>`;
+  }).join('');
+
+  const totalRevenue = data.reduce((s,t)=>s+t.total,0);
+  const fromLabel = formatDate(document.getElementById('export-from').value);
+  const toLabel = formatDate(document.getElementById('export-to').value);
+
+  const html = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>
+<x:ExcelWorksheet><x:Name>Laporan Laundry</x:Name>
+<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>
+  body { font-family: Arial, sans-serif; font-size: 11pt; }
+  table { border-collapse: collapse; width: 100%; }
+  th { background: #C62828; color: #ffffff; padding: 8px 10px; text-align: left; font-size:10pt; border:1px solid #999; white-space:nowrap; }
+  td { padding: 6px 10px; border: 1px solid #ddd; font-size: 10pt; }
+  tr:nth-child(even) td { background: #FFF8F0; }
+  .title-row td { background: #FFF3E0; font-weight: bold; font-size: 14pt; color: #C62828; border:none; }
+  .sub-row td { color: #888; font-size: 9pt; border:none; }
+  .total-row td { background: #FFF3E0; font-weight:bold; font-size:11pt; border-top:2px solid #C62828; }
+</style>
+</head>
+<body>
+<table>
+  <tr class="title-row"><td colspan="14">🌸 Sakura Laundry — Laporan Transaksi</td></tr>
+  <tr class="sub-row"><td colspan="14">Periode: ${fromLabel} s/d ${toLabel} &nbsp;|&nbsp; Dicetak: ${new Date().toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</td></tr>
+  <tr><td colspan="14" style="padding:4px;border:none"></td></tr>
+  <tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr>
+  ${trs}
+  <tr class="total-row">
+    <td colspan="10" style="text-align:right">TOTAL PENDAPATAN</td>
+    <td style="color:#C62828">Rp ${Math.round(totalRevenue).toLocaleString('id-ID')}</td>
+    <td colspan="3"></td>
+  </tr>
+  <tr class="total-row">
+    <td colspan="10" style="text-align:right">TOTAL TRANSAKSI</td>
+    <td>${data.length} transaksi</td>
+    <td colspan="3"></td>
+  </tr>
+</table>
+<br>
+<p style="font-size:9pt;color:#aaa">Generated by Sakura Laundry System &nbsp;·&nbsp; 桜 洗濯専門店</p>
+</body></html>`;
+
+  downloadBlob(html, filename + '.xls', 'application/vnd.ms-excel;charset=utf-8;');
+}
+
+function downloadBlob(content, filename, mimeType) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// Close export modal on backdrop click
+document.getElementById('export-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeExport();
+});
 
 // ===== CUSTOMER AUTOCOMPLETE =====
 let acFocusIdx = -1;
