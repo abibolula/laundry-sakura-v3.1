@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桜 Sakura Laundry — Kasir Modern</title>
+<style>
+/* ===== FONTS ===== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;700&display=swap');
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --red: #C62828;
+  --red-light: #EF5350;
+  --red-neon: #FF1744;
+  --red-glow: rgba(198,40,40,0.25);
+  --black: #0D0D0D;
+  --white: #FAFAFA;
+  --cream: #FFF8F0;
+  --cream2: #FFF3E0;
+  --gray: #9E9E9E;
+  --gray-light: #F5F5F5;
+  --border: rgba(0,0,0,0.08);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.14);
+  --glass: rgba(255,255,255,0.72);
+  --glass-dark: rgba(255,255,255,0.05);
+  --bg: #FFF8F0;
+  --bg2: #FFFFFF;
+  --text: #1A1A1A;
+  --text2: #555;
+  --text3: #888;
+  --card: #FFFFFF;
+  --card-border: rgba(198,40,40,0.12);
+  --input-bg: #FFFFFF;
+  --input-border: rgba(0,0,0,0.14);
+  --nav-bg: rgba(255,248,240,0.92);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --transition: 0.25s cubic-bezier(.4,0,.2,1);
+  --font-jp: 'Noto Serif JP', serif;
+  --font-main: 'DM Sans', sans-serif;
+  --font-alt: 'Zen Kaku Gothic New', sans-serif;
+}
+
+[data-theme="dark"] {
+  --bg: #0A0A0A;
+  --bg2: #141414;
+  --text: #F5F0EB;
+  --text2: #C0B8B0;
+  --text3: #777;
+  --card: #1C1C1C;
+  --card-border: rgba(198,40,40,0.2);
+  --glass: rgba(28,28,28,0.8);
+  --border: rgba(255,255,255,0.07);
+  --gray-light: #1E1E1E;
+  --input-bg: #1C1C1C;
+  --input-border: rgba(255,255,255,0.1);
+  --nav-bg: rgba(10,10,10,0.92);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.6);
+  --cream: #151515;
+  --cream2: #1A1A1A;
+}
+
+/* ===== RESET ===== */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+input,select,textarea,button { font-family: var(--font-main); outline:none; }
+button { cursor:pointer; border:none; }
+a { text-decoration:none; color:inherit; }
+ul { list-style:none; }
+
+/* ===== SAKURA PARTICLES ===== */
+#sakura-layer {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  pointer-events:none; z-index:0; overflow:hidden;
+}
+.petal {
+  position:absolute;
+  width:12px; height:14px;
+  opacity:0.35;
+  animation: fall linear infinite;
+  border-radius: 50% 0 50% 0;
+}
+[data-theme="dark"] .petal { opacity:0.15; }
+@keyframes fall {
+  0% { transform: translateY(-40px) rotate(0deg) translateX(0); opacity:.4; }
+  50% { transform: translateY(50vh) rotate(180deg) translateX(30px); opacity:.3; }
+  100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity:0; }
+}
+
+/* ===== BACKGROUND PATTERN ===== */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(198,40,40,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(198,40,40,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+/* ===== NAV ===== */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 64px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition: background var(--transition);
+}
+.nav-brand {
+  display:flex; align-items:center; gap:10px;
+}
+.nav-logo {
+  width:36px; height:36px;
+  background: linear-gradient(135deg, var(--red), var(--red-light));
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--font-jp);
+  color:#fff; font-size:16px;
+  box-shadow: 0 4px 14px var(--red-glow);
+}
+.nav-title { font-size:17px; font-weight:700; letter-spacing:-0.3px; }
+.nav-title span { color:var(--red); }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.nav-time {
+  font-size:13px; color:var(--text3);
+  font-variant-numeric: tabular-nums;
+  display:flex; align-items:center; gap:6px;
+}
+.status-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:#4CAF50;
+  box-shadow:0 0 8px #4CAF50;
+  animation: pulse-dot 2s infinite;
+}
+.status-dot.closed { background:#EF5350; box-shadow:0 0 8px #EF5350; }
+@keyframes pulse-dot { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.4); } }
+.btn-icon {
+  width:36px; height:36px; border-radius:10px;
+  background: var(--gray-light); color:var(--text2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; transition:all var(--transition);
+  border:1px solid var(--border);
+}
+.btn-icon:hover { background:var(--red); color:#fff; transform:scale(1.05); }
+
+/* ===== NAV TABS ===== */
+.tab-bar {
+  position:fixed; top:64px; left:0; right:0; z-index:99;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display:flex;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding: 0 12px;
+}
+.tab-bar::-webkit-scrollbar { display:none; }
+.tab-btn {
+  flex:none;
+  padding: 0 18px;
+  height:46px;
+  font-size:13px; font-weight:500;
+  color:var(--text3);
+  border-bottom: 2.5px solid transparent;
+  background:transparent;
+  white-space:nowrap;
+  transition:all var(--transition);
+  display:flex; align-items:center; gap:6px;
+}
+.tab-btn.active { color:var(--red); border-bottom-color:var(--red); }
+.tab-btn:hover { color:var(--text); }
+
+/* ===== MAIN LAYOUT ===== */
+main {
+  padding-top:112px;
+  padding-bottom:40px;
+  position:relative; z-index:1;
+}
+.container {
+  max-width:900px;
+  margin:0 auto;
+  padding:0 16px;
+}
+
+/* ===== SECTION ===== */
+.section { display:none; }
+.section.active { display:block; animation: fadeUp .35s ease; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ===== HERO ===== */
+.hero {
+  padding: 28px 0 20px;
+  text-align:center;
+  position:relative;
+}
+.hero-jp {
+  font-family:var(--font-jp);
+  font-size:38px; font-weight:300;
+  letter-spacing:6px;
+  color:var(--red);
+  text-shadow: 0 0 30px var(--red-glow);
+  line-height:1.1;
+}
+.hero-name {
+  font-size:26px; font-weight:700;
+  letter-spacing:-0.5px;
+  margin-top:4px;
+}
+.hero-sub {
+  font-size:13px; color:var(--text3);
+  margin-top:6px; letter-spacing:0.5px;
+}
+.hero-divider {
+  width:60px; height:2px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+  margin:14px auto;
+}
+
+/* ===== DASHBOARD STATS ===== */
+.stats-grid {
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
+@media(min-width:600px) {
+  .stats-grid { grid-template-columns: repeat(4,1fr); }
+}
+.stat-card {
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:16px 14px;
+  border:1px solid var(--card-border);
+  box-shadow:var(--shadow);
+  transition:all var(--transition);
+  position:relative; overflow:hidden;
+}
+.stat-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--red), var(--red-light));
+}
+.stat-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.stat-icon { font-size:22px; margin-bottom:8px; }
+.stat-val {
+  font-size:22px; font-weight:700;
+  color:var(--text);
+  line-height:1;
+}
+.stat-val.money { font-size:16px; }
+.stat-label { font-size:11px; color:var(--text3); margin-top:4px; letter-spacing:0.5px; text-transform:uppercase; }
+
+/* ===== SECTION TITLE ===== */
+.sec-title {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:16px;
+}
+.sec-title h2 {
+  font-size:18px; font-weight:700;
+  letter-spacing:-0.3px;
+}
+.sec-title .jp { font-family:var(--font-jp); font-size:12px; color:var(--text3); font-weight:300; }
+.sec-line {
+  flex:1; height:1px;
+  background:linear-gradient(90deg,var(--card-border),transparent);
+}
+
+/* ===== CARDS ===== */
+.card {
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:20px;
+  border:1px solid var(--card-border);
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+  transition:background var(--transition);
+}
+
+/* ===== FORM ===== */
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+@media(min-width:600px) {
+  .form-grid { grid-template-columns:1fr 1fr; }
+  .form-grid .full { grid-column:1/-1; }
+}
+.form-group label {
+  display:block;
+  font-size:11.5px; font-weight:600;
+  color:var(--text3);
+  text-transform:uppercase; letter-spacing:0.6px;
+  margin-bottom:6px;
+}
+.form-group label span { color:var(--red); }
+.form-input, .form-select, .form-textarea {
+  width:100%;
+  background:var(--input-bg);
+  border:1.5px solid var(--input-border);
+  border-radius:var(--radius-sm);
+  padding:12px 14px;
+  font-size:14px;
+  color:var(--text);
+  transition:all var(--transition);
+  appearance:none;
+  -webkit-appearance:none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color:var(--red);
+  box-shadow:0 0 0 3px var(--red-glow);
+  background:var(--input-bg);
+}
+.form-textarea { resize:vertical; min-height:72px; }
+.form-select {
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+[data-theme="dark"] .form-select {
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23777'/%3E%3C/svg%3E");
+}
+
+.price-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+
+/* ===== CALC SUMMARY ===== */
+.calc-box {
+  background:linear-gradient(135deg,rgba(198,40,40,0.05),rgba(198,40,40,0.02));
+  border:1.5px solid rgba(198,40,40,0.15);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  margin-top:4px;
+}
+.calc-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:5px 0;
+  font-size:13.5px;
+  color:var(--text2);
+  border-bottom:1px solid var(--border);
+}
+.calc-row:last-child { border:none; }
+.calc-row.total {
+  font-size:18px; font-weight:700;
+  color:var(--text);
+  padding-top:10px; margin-top:4px;
+}
+.calc-row.total .val { color:var(--red); }
+.calc-lbl { }
+.calc-val { font-weight:600; font-variant-numeric:tabular-nums; }
+.est-date { font-size:11px; color:var(--text3); margin-top:4px; }
+.est-edit {
+  display:flex; gap:8px; align-items:center; margin-top:8px;
+}
+.est-edit input {
+  flex:1;
+  background:var(--input-bg);
+  border:1.5px solid var(--input-border);
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:13px;
+  color:var(--text);
+}
+.est-edit input:focus { border-color:var(--red); }
+
+/* ===== BUTTONS ===== */
+.btn-group {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:16px;
+}
+@media(min-width:480px) {
+  .btn-group { grid-template-columns:repeat(4,1fr); }
+}
+.btn {
+  padding:12px 10px;
+  border-radius:var(--radius-sm);
+  font-size:13px; font-weight:600;
+  transition:all var(--transition);
+  display:flex; align-items:center; justify-content:center; gap:6px;
+  letter-spacing:0.2px;
+  position:relative; overflow:hidden;
+}
+.btn::after {
+  content:'';
+  position:absolute; inset:0;
+  background:rgba(255,255,255,0.15);
+  opacity:0; transition:opacity var(--transition);
+}
+.btn:hover::after { opacity:1; }
+.btn:active { transform:scale(0.97); }
+.btn-primary {
+  background:linear-gradient(135deg,var(--red),var(--red-light));
+  color:#fff;
+  box-shadow:0 4px 16px var(--red-glow);
+}
+.btn-primary:hover { box-shadow:0 6px 24px rgba(198,40,40,0.4); transform:translateY(-1px); }
+.btn-outline {
+  background:transparent;
+  border:1.5px solid var(--input-border);
+  color:var(--text2);
+}
+.btn-outline:hover { border-color:var(--red); color:var(--red); }
+.btn-wa {
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(37,211,102,0.25);
+}
+.btn-wa:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,211,102,0.35); }
+.btn-print {
+  background:var(--gray-light);
+  color:var(--text2);
+  border:1.5px solid var(--border);
+}
+.btn-print:hover { background:var(--text); color:#fff; }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display:flex; gap:8px; flex-wrap:wrap;
+  margin-bottom:14px;
+  align-items:center;
+}
+.filter-bar input[type="date"],
+.filter-bar select,
+.filter-bar input[type="search"] {
+  background:var(--input-bg);
+  border:1.5px solid var(--input-border);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  font-size:13px; color:var(--text);
+  flex:1; min-width:110px;
+}
+.filter-bar input:focus, .filter-bar select:focus { border-color:var(--red); }
+.filter-bar .search-wrap { position:relative; flex:2; min-width:160px; }
+.filter-bar .search-wrap input { width:100%; padding-left:34px; }
+.filter-bar .search-wrap::before {
+  content:'🔍'; position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  font-size:13px; pointer-events:none;
+}
+.filter-chips { display:flex; gap:6px; flex-wrap:wrap; }
+.chip {
+  padding:6px 14px;
+  border-radius:100px;
+  font-size:12px; font-weight:600;
+  background:var(--gray-light);
+  color:var(--text3);
+  border:1.5px solid transparent;
+  transition:all var(--transition);
+  cursor:pointer;
+}
+.chip.active { background:var(--red); color:#fff; border-color:var(--red); }
+.chip:hover { border-color:var(--red); color:var(--red); }
+.chip.active:hover { color:#fff; }
+
+/* ===== TABLE ===== */
+.table-wrap {
+  overflow-x:auto;
+  border-radius:var(--radius);
+  border:1px solid var(--card-border);
+  background:var(--card);
+  box-shadow:var(--shadow);
+}
+table { width:100%; border-collapse:collapse; min-width:600px; }
+thead tr {
+  background:linear-gradient(135deg,rgba(198,40,40,0.08),rgba(198,40,40,0.03));
+}
+thead th {
+  padding:12px 14px;
+  text-align:left;
+  font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.7px;
+  color:var(--text3);
+  border-bottom:1px solid var(--border);
+}
+tbody tr {
+  border-bottom:1px solid var(--border);
+  transition:background var(--transition);
+}
+tbody tr:last-child { border:none; }
+tbody tr:hover { background:rgba(198,40,40,0.03); }
+td {
+  padding:12px 14px;
+  font-size:13.5px;
+  color:var(--text);
+  vertical-align:middle;
+}
+.td-name { font-weight:600; }
+.td-total { font-weight:700; color:var(--red); font-variant-numeric:tabular-nums; }
+
+/* ===== STATUS BADGE ===== */
+.badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 10px;
+  border-radius:100px;
+  font-size:11px; font-weight:700;
+  letter-spacing:0.3px;
+  white-space:nowrap;
+}
+.badge-diproses { background:rgba(255,167,38,0.15); color:#F57C00; }
+.badge-dicuci { background:rgba(33,150,243,0.15); color:#1565C0; }
+.badge-selesai { background:rgba(76,175,80,0.15); color:#2E7D32; }
+.badge-diambil { background:rgba(156,39,176,0.15); color:#6A1B9A; }
+
+/* Status select */
+.status-sel {
+  background:var(--input-bg);
+  border:1px solid var(--input-border);
+  border-radius:8px;
+  padding:5px 8px;
+  font-size:12px; color:var(--text);
+  cursor:pointer;
+}
+
+/* Action buttons */
+.act-btns { display:flex; gap:6px; }
+.act-btn {
+  width:30px; height:30px;
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px;
+  transition:all var(--transition);
+  border:1px solid var(--border);
+  background:var(--gray-light);
+}
+.act-btn:hover { transform:scale(1.1); }
+.act-btn.del:hover { background:#EF5350; color:#fff; border-color:#EF5350; }
+.act-btn.wa:hover { background:#25D366; color:#fff; border-color:#25D366; }
+.act-btn.print:hover { background:var(--text); color:#fff; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align:center;
+  padding:60px 20px;
+  color:var(--text3);
+}
+.empty-state .es-icon { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-state h3 { font-size:16px; margin-bottom:6px; color:var(--text2); }
+.empty-state p { font-size:13px; }
+.empty-state .jp { font-family:var(--font-jp); font-size:20px; color:var(--red); opacity:0.4; margin-bottom:8px; }
+
+/* ===== TOAST ===== */
+#toast-container {
+  position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+  z-index:9999; display:flex; flex-direction:column; gap:8px;
+  pointer-events:none;
+  width:min(360px,90vw);
+}
+.toast {
+  background:var(--text);
+  color:var(--bg);
+  padding:12px 18px;
+  border-radius:var(--radius-sm);
+  font-size:13.5px; font-weight:500;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:var(--shadow-lg);
+  animation:toastIn .3s ease;
+  pointer-events:all;
+  border-left:3px solid var(--red);
+}
+[data-theme="dark"] .toast { background:#1C1C1C; color:var(--text); }
+@keyframes toastIn {
+  from { opacity:0; transform:translateY(20px) scale(.95); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+.toast.out { animation:toastOut .3s ease forwards; }
+@keyframes toastOut {
+  to { opacity:0; transform:translateY(10px) scale(.95); }
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-wrap { margin-top:8px; }
+.progress-label {
+  font-size:11px; color:var(--text3);
+  display:flex; justify-content:space-between; margin-bottom:4px;
+}
+.progress-bar {
+  height:4px; background:var(--border);
+  border-radius:100px; overflow:hidden;
+}
+.progress-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--red),var(--red-light));
+  border-radius:100px;
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align:center;
+  padding:32px 20px;
+  border-top:1px solid var(--border);
+  margin-top:16px;
+  position:relative; z-index:1;
+}
+.footer-jp { font-family:var(--font-jp); font-size:22px; letter-spacing:4px; color:var(--red); margin-bottom:8px; }
+.footer-sub { font-size:12px; color:var(--text3); letter-spacing:0.5px; }
+
+/* ===== NOTA PRINT ===== */
+#nota-preview {
+  display:none;
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.7);
+  align-items:center; justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(6px);
+}
+#nota-preview.show { display:flex; }
+.nota-modal {
+  background:#fff;
+  border-radius:var(--radius);
+  max-width:360px; width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:var(--shadow-lg);
+  position:relative;
+}
+.nota-close {
+  position:absolute; top:12px; right:12px;
+  width:32px; height:32px;
+  background:#f5f5f5; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#555; cursor:pointer;
+  z-index:1;
+  border:none;
+}
+.nota-close:hover { background:#EF5350; color:#fff; }
+#nota-content {
+  padding:24px 22px;
+  font-family:var(--font-main);
+  color:#1A1A1A;
+  font-size:13px;
+  line-height:1.6;
+}
+.nota-header { text-align:center; margin-bottom:16px; }
+.nota-jp { font-family:var(--font-jp); font-size:28px; color:#C62828; letter-spacing:4px; }
+.nota-brand { font-size:20px; font-weight:700; }
+.nota-tagline { font-size:11px; color:#888; }
+.nota-divider { border:none; border-top:2px dashed #ddd; margin:12px 0; }
+.nota-row { display:flex; justify-content:space-between; margin:5px 0; font-size:12.5px; }
+.nota-row .lbl { color:#666; }
+.nota-row .val { font-weight:600; text-align:right; }
+.nota-total-row {
+  display:flex; justify-content:space-between;
+  font-size:16px; font-weight:700;
+  margin-top:8px; padding-top:8px;
+  border-top:2px solid #1A1A1A;
+}
+.nota-total-row .val { color:#C62828; }
+.nota-footer-text { text-align:center; margin-top:14px; font-family:var(--font-jp); font-size:16px; color:#C62828; letter-spacing:2px; }
+.nota-footer-sub { text-align:center; font-size:11px; color:#aaa; margin-top:4px; }
+.nota-actions {
+  display:flex; gap:8px;
+  padding:14px 22px 20px;
+  border-top:1px solid #eee;
+}
+.nota-actions button {
+  flex:1; padding:11px;
+  border-radius:10px; font-size:13px; font-weight:600;
+  cursor:pointer; transition:all var(--transition);
+}
+.nota-save-btn {
+  background:linear-gradient(135deg,#C62828,#EF5350);
+  color:#fff; border:none;
+  box-shadow:0 4px 14px rgba(198,40,40,0.3);
+}
+.nota-save-btn:hover { transform:translateY(-1px); }
+.nota-wa-btn {
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#fff; border:none;
+}
+.nota-wa-btn:hover { transform:translateY(-1px); }
+
+/* ===== LOADING ===== */
+#loading {
+  position:fixed; inset:0; z-index:999;
+  background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:opacity .5s, visibility .5s;
+}
+#loading.hide { opacity:0; visibility:hidden; pointer-events:none; }
+.loading-jp { font-family:var(--font-jp); font-size:32px; color:var(--red); letter-spacing:6px; animation:pulse 1.5s infinite; }
+.loading-bar {
+  width:120px; height:2px;
+  background:var(--border); border-radius:100px; margin-top:16px; overflow:hidden;
+}
+.loading-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg,var(--red),var(--red-light));
+  animation:loadingFill 1.5s ease-in-out infinite;
+}
+@keyframes loadingFill { 0%{width:0} 100%{width:100%} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ===== CUSTOMER AUTOCOMPLETE ===== */
+.ac-wrap { position:relative; }
+.ac-dropdown {
+  position:absolute; top:calc(100% + 6px); left:0; right:0;
+  background:var(--card);
+  border:1.5px solid var(--card-border);
+  border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-lg);
+  z-index:200;
+  max-height:240px;
+  overflow-y:auto;
+  display:none;
+  animation:fadeUp .18s ease;
+}
+.ac-dropdown.open { display:block; }
+.ac-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition:background var(--transition);
+  border-bottom:1px solid var(--border);
+}
+.ac-item:last-child { border-bottom:none; }
+.ac-item:hover, .ac-item.focused { background:rgba(198,40,40,0.06); }
+.ac-avatar {
+  width:34px; height:34px; flex:none;
+  background:linear-gradient(135deg,var(--red),var(--red-light));
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:13px; font-weight:700;
+  box-shadow:0 2px 8px var(--red-glow);
+}
+.ac-info { min-width:0; }
+.ac-name { font-size:13.5px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ac-meta { font-size:11px; color:var(--text3); margin-top:1px; }
+.ac-trx { font-size:10.5px; color:var(--red); font-weight:600; }
+.ac-empty {
+  padding:16px 14px;
+  text-align:center;
+  font-size:12.5px; color:var(--text3);
+}
+.ac-header {
+  padding:8px 14px 6px;
+  font-size:10.5px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.6px;
+  color:var(--text3);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:6px;
+}
+.ac-mark { color:var(--red); font-weight:700; }
+
+/* ===== DATE INPUT ===== */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter:invert(0.5);
+  cursor:pointer;
+}
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.8); }
+
+/* ===== MOBILE TWEAKS ===== */
+@media(max-width:480px) {
+  .hero-jp { font-size:28px; }
+  .hero-name { font-size:20px; }
+  .stat-val { font-size:18px; }
+  .btn-group { grid-template-columns:1fr 1fr; }
+  td { font-size:12.5px; }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(198,40,40,0.3); border-radius:100px; }
+
+/* ===== NOTA CANVAS WRAPPER ===== */
+#nota-canvas-wrap { display:none; }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="loading-jp">桜</div>
+  <div style="font-size:13px;color:var(--text3);margin-top:8px;font-family:var(--font-main)">Sakura Laundry</div>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<!-- Sakura Particles -->
+<div id="sakura-layer"></div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<!-- Nota Preview Modal -->
+<div id="nota-preview">
+  <div class="nota-modal">
+    <button class="nota-close" onclick="closeNota()">✕</button>
+    <div id="nota-content"></div>
+    <div class="nota-actions">
+      <button class="nota-save-btn" onclick="saveNotaJpg()">💾 Simpan JPG</button>
+      <button class="nota-wa-btn" onclick="sendNotaWa()">📲 Kirim WA</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">桜</div>
+    <div>
+      <div class="nav-title"><span>Sakura</span> Laundry</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-time">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="live-time">--:--</span>
+    </div>
+    <button class="btn-icon" onclick="toggleDark()" title="Dark Mode (D)">🌙</button>
+  </div>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="dashboard" onclick="switchTab(this,'dashboard')">📊 Dashboard</button>
+  <button class="tab-btn" data-tab="transaksi" onclick="switchTab(this,'transaksi')">➕ Transaksi Baru</button>
+  <button class="tab-btn" data-tab="orders" onclick="switchTab(this,'orders')">📋 Daftar Order</button>
+</div>
+
+<main>
+<div class="container">
+
+<!-- ===== DASHBOARD ===== -->
+<section class="section active" id="sec-dashboard">
+  <div class="hero">
+    <div class="hero-jp">桜</div>
+    <div class="hero-name">Sakura Laundry</div>
+    <div class="hero-sub">洗濯専門店 — Laundry Premium Jepang</div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="sec-title">
+    <h2>Statistik</h2>
+    <span class="jp">統計</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">🧾</div>
+      <div class="stat-val" id="stat-total">0</div>
+      <div class="stat-label">Total Transaksi</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💴</div>
+      <div class="stat-val money" id="stat-revenue">Rp 0</div>
+      <div class="stat-label">Total Pendapatan</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔄</div>
+      <div class="stat-val" id="stat-process">0</div>
+      <div class="stat-label">Sedang Diproses</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-val" id="stat-done">0</div>
+      <div class="stat-label">Selesai</div>
+    </div>
+  </div>
+
+  <div class="sec-title">
+    <h2>Transaksi Terkini</h2>
+    <span class="jp">最近の取引</span>
+    <div class="sec-line"></div>
+  </div>
+  <div id="recent-table-wrap">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>No</th><th>Nama</th><th>Jenis</th><th>Berat</th><th>Total</th><th>Status</th>
+        </tr></thead>
+        <tbody id="recent-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div id="recent-empty" class="empty-state" style="display:none">
+    <div class="jp">空</div>
+    <div class="es-icon">🧺</div>
+    <h3>Belum ada transaksi</h3>
+    <p>Transaksi baru akan muncul di sini</p>
+  </div>
+</section>
+
+<!-- ===== TRANSAKSI BARU ===== -->
+<section class="section" id="sec-transaksi">
+  <div class="hero" style="padding-bottom:8px">
+    <div class="hero-name" style="font-size:20px">Transaksi Baru</div>
+    <div class="hero-sub">新しい取引 — Input data laundry pelanggan</div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="card">
+    <div class="form-grid">
+      <!-- Nama -->
+      <div class="form-group">
+        <label>Nama Pelanggan <span>*</span></label>
+        <div class="ac-wrap">
+          <input id="f-nama" type="text" class="form-input" placeholder="Nama lengkap / cari pelanggan lama..." autocomplete="off"
+            oninput="acSearch(this.value)"
+            onkeydown="acKeyNav(event)"
+            onfocus="acSearch(this.value)"
+          >
+          <div id="ac-dropdown" class="ac-dropdown"></div>
+        </div>
+      </div>
+      <!-- WA -->
+      <div class="form-group">
+        <label>No. WhatsApp <span>*</span></label>
+        <div style="position:relative">
+          <input id="f-wa" type="tel" class="form-input" placeholder="08xxxxxxxxxx" style="padding-right:40px">
+          <button onclick="copyWA()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px" title="Copy WA">📋</button>
+        </div>
+      </div>
+      <!-- Jenis -->
+      <div class="form-group">
+        <label>Jenis Laundry <span>*</span></label>
+        <select id="f-jenis" class="form-select" onchange="onJenisChange()">
+          <option value="">-- Pilih Jenis --</option>
+          <option value="Cuci Kering">Cuci Kering</option>
+          <option value="Cuci Setrika">Cuci Setrika</option>
+          <option value="Setrika">Setrika</option>
+          <option value="Express">Express</option>
+          <option value="Bed Cover">Bed Cover</option>
+          <option value="Karpet">Karpet</option>
+        </select>
+      </div>
+      <!-- Berat -->
+      <div class="form-group">
+        <label>Berat (kg) <span>*</span></label>
+        <input id="f-berat" type="number" class="form-input" placeholder="0.0" step="0.1" min="0" oninput="calcTotal()">
+      </div>
+      <!-- Harga per kg -->
+      <div class="form-group">
+        <label>Harga per Kg</label>
+        <input id="f-harga" type="number" class="form-input" placeholder="Rp 0" oninput="calcTotal()">
+      </div>
+      <!-- Diskon -->
+      <div class="form-group">
+        <label>Diskon (%)</label>
+        <input id="f-diskon" type="number" class="form-input" placeholder="0" min="0" max="100" oninput="calcTotal()">
+      </div>
+      <!-- Tanggal Masuk -->
+      <div class="form-group">
+        <label>Tanggal Masuk</label>
+        <input id="f-masuk" type="date" class="form-input">
+      </div>
+      <!-- Catatan -->
+      <div class="form-group full">
+        <label>Catatan</label>
+        <textarea id="f-catatan" class="form-textarea" placeholder="Catatan khusus..."></textarea>
+      </div>
+    </div>
+
+    <!-- Kalkulasi -->
+    <div class="calc-box" style="margin-top:14px">
+      <div class="calc-row">
+        <span class="calc-lbl">Subtotal</span>
+        <span class="calc-val" id="c-subtotal">Rp 0</span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-lbl">Diskon</span>
+        <span class="calc-val" id="c-diskon" style="color:#4CAF50">- Rp 0</span>
+      </div>
+      <div class="calc-row total">
+        <span class="calc-lbl">Total Bayar</span>
+        <span class="calc-val val" id="c-total">Rp 0</span>
+      </div>
+      <div class="est-date" style="margin-top:10px">
+        <div style="font-weight:600;font-size:12px;color:var(--text2);margin-bottom:4px">⏰ Estimasi Selesai</div>
+        <div class="est-edit">
+          <input type="text" id="f-estimasi" placeholder="Pilih jenis laundry dulu..." readonly style="cursor:default">
+          <button onclick="editEstimasi()" class="btn btn-outline" style="flex:none;padding:8px 12px;font-size:12px">✏️ Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tombol -->
+    <div class="btn-group">
+      <button class="btn btn-outline" onclick="resetForm()">🔄 Reset</button>
+      <button class="btn btn-primary" onclick="simpanTransaksi()">💾 Simpan</button>
+      <button class="btn btn-print" onclick="printNota()">🖨️ Nota</button>
+      <button class="btn btn-wa" onclick="sendWA('proses')">💬 WhatsApp</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DAFTAR ORDER ===== -->
+<section class="section" id="sec-orders">
+  <div class="hero" style="padding-bottom:8px">
+    <div class="hero-name" style="font-size:20px">Daftar Order</div>
+    <div class="hero-sub">注文リスト — Kelola semua transaksi laundry</div>
+    <div class="hero-divider"></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="card" style="padding:14px 16px">
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <input type="search" id="search-input" placeholder="Cari nama / jenis..." oninput="renderOrders()">
+      </div>
+      <input type="date" id="filter-from" onchange="renderOrders()">
+      <input type="date" id="filter-to" onchange="renderOrders()">
+      <button class="btn btn-outline" style="padding:9px 14px;font-size:12px;flex:none" onclick="resetFilter()">Reset</button>
+    </div>
+    <div class="filter-chips">
+      <div class="chip active" data-status="all" onclick="filterChip(this)">Semua</div>
+      <div class="chip" data-status="Diproses" onclick="filterChip(this)">🔄 Diproses</div>
+      <div class="chip" data-status="Dicuci" onclick="filterChip(this)">💦 Dicuci</div>
+      <div class="chip" data-status="Selesai" onclick="filterChip(this)">✅ Selesai</div>
+      <div class="chip" data-status="Diambil" onclick="filterChip(this)">📦 Diambil</div>
+    </div>
+  </div>
+
+  <div id="orders-table-wrap" class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>No</th><th>Nama</th><th>Jenis</th><th>Berat</th><th>Total</th><th>Status</th><th>Aksi</th>
+      </tr></thead>
+      <tbody id="orders-tbody"></tbody>
+    </table>
+  </div>
+  <div id="orders-empty" class="empty-state" style="display:none">
+    <div class="jp">空</div>
+    <div class="es-icon">🧺</div>
+    <h3>Tidak ada order ditemukan</h3>
+    <p>Coba ubah filter pencarian</p>
+  </div>
+</section>
+
+</div><!-- /container -->
+</main>
+
+<footer>
+  <div class="footer-jp">ありがとうございます</div>
+  <div class="footer-sub">Arigatou Gozaimasu · Terima kasih telah menggunakan Sakura Laundry</div>
+  <div style="font-size:11px;color:var(--text3);margin-top:6px">© 2025 Sakura Laundry · 桜 洗濯専門店</div>
+</footer>
+
+<!-- Hidden canvas for JPG export -->
+<canvas id="nota-canvas" style="display:none"></canvas>
+
+<script>
+/* ======================================
+   SAKURA LAUNDRY — KASIR SISTEM
+   Vanilla JS · LocalStorage · No Framework
+====================================== */
+
+// ===== DATA =====
+let transactions = [];
+let currentNotaId = null;
+let activeFilter = 'all';
+
+const HARGA_DEFAULT = {
+  'Cuci Kering': 7000,
+  'Cuci Setrika': 9000,
+  'Setrika': 5000,
+  'Express': 15000,
+  'Bed Cover': 25000,
+  'Karpet': 20000
+};
+const EST_HARI = {
+  'Cuci Kering': 2,
+  'Cuci Setrika': 3,
+  'Setrika': 1,
+  'Express': 1,
+  'Bed Cover': 3,
+  'Karpet': 4
+};
+
+// ===== LOAD =====
+function loadData() {
+  const raw = localStorage.getItem('sakura_transactions');
+  transactions = raw ? JSON.parse(raw) : [];
+}
+function saveData() {
+  localStorage.setItem('sakura_transactions', JSON.stringify(transactions));
+}
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  initSakura();
+  initClock();
+  setTodayDate();
+  setDefaultFilter();
+  updateDashboard();
+  renderRecent();
+  renderOrders();
+
+  // keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.altKey) {
+      if (e.key === '1') switchTabById('dashboard');
+      if (e.key === '2') { switchTabById('transaksi'); document.getElementById('f-nama').focus(); }
+      if (e.key === '3') switchTabById('orders');
+      if (e.key === 'd') toggleDark();
+    }
+  });
+
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hide');
+  }, 1200);
+});
+
+// ===== CLOCK =====
+function initClock() {
+  function tick() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    const s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('live-time').textContent = `${h}:${m}:${s}`;
+    const dot = document.getElementById('status-dot');
+    if (now.getHours() >= 7 && now.getHours() < 21) {
+      dot.classList.remove('closed');
+      dot.title = 'Buka';
+    } else {
+      dot.classList.add('closed');
+      dot.title = 'Tutup';
+    }
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+// ===== SAKURA =====
+function initSakura() {
+  const layer = document.getElementById('sakura-layer');
+  const colors = ['#FFB7C5','#FFC0CB','#FF9EBC','#FFACC4','#C62828'];
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const size = 8 + Math.random() * 10;
+    p.style.cssText = `
+      width:${size}px; height:${size*1.2}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%;
+      animation-duration:${6+Math.random()*10}s;
+      animation-delay:${-Math.random()*12}s;
+    `;
+    layer.appendChild(p);
+  }
+}
+
+// ===== TABS =====
+function switchTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sec-'+tab).classList.add('active');
+  if (tab === 'orders') renderOrders();
+  if (tab === 'dashboard') { updateDashboard(); renderRecent(); }
+  playClick();
+}
+function switchTabById(tab) {
+  const btn = document.querySelector(`[data-tab="${tab}"]`);
+  if (btn) switchTab(btn, tab);
+}
+
+// ===== DATE DEFAULTS =====
+function setTodayDate() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('f-masuk').value = today;
+}
+function setDefaultFilter() {
+  const to = new Date();
+  const from = new Date();
+  from.setDate(from.getDate() - 7);
+  document.getElementById('filter-to').value = to.toISOString().split('T')[0];
+  document.getElementById('filter-from').value = from.toISOString().split('T')[0];
+}
+function resetFilter() {
+  setDefaultFilter();
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelector('.chip[data-status="all"]').classList.add('active');
+  activeFilter = 'all';
+  renderOrders();
+}
+
+// ===== JENIS CHANGE =====
+function onJenisChange() {
+  const jenis = document.getElementById('f-jenis').value;
+  if (jenis && HARGA_DEFAULT[jenis]) {
+    document.getElementById('f-harga').value = HARGA_DEFAULT[jenis];
+  }
+  updateEstimasi();
+  calcTotal();
+}
+
+function updateEstimasi() {
+  const jenis = document.getElementById('f-jenis').value;
+  const masuk = document.getElementById('f-masuk').value;
+  if (!jenis || !masuk) return;
+  const hari = EST_HARI[jenis] || 2;
+  const d = new Date(masuk);
+  d.setDate(d.getDate() + hari);
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('f-estimasi').value = d.toLocaleDateString('id-ID', opts);
+  document.getElementById('f-estimasi').readOnly = true;
+}
+
+function editEstimasi() {
+  const el = document.getElementById('f-estimasi');
+  el.readOnly = !el.readOnly;
+  if (!el.readOnly) { el.focus(); toast('✏️ Estimasi bisa diedit', 'info'); }
+  else toast('🔒 Estimasi dikunci', 'info');
+}
+
+// ===== CALC =====
+function calcTotal() {
+  const berat = parseFloat(document.getElementById('f-berat').value) || 0;
+  const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+  const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+  const subtotal = berat * harga;
+  const disc = subtotal * (diskon / 100);
+  const total = subtotal - disc;
+  document.getElementById('c-subtotal').textContent = rupiah(subtotal);
+  document.getElementById('c-diskon').textContent = `- ${rupiah(disc)}`;
+  document.getElementById('c-total').textContent = rupiah(total);
+  updateEstimasi();
+}
+
+// ===== RESET FORM =====
+function resetForm() {
+  ['f-nama','f-wa','f-berat','f-harga','f-diskon','f-catatan'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-jenis').value = '';
+  document.getElementById('f-estimasi').value = '';
+  setTodayDate();
+  calcTotal();
+  document.getElementById('f-nama').focus();
+  toast('🔄 Form direset', 'info');
+  playClick();
+}
+
+// ===== SIMPAN TRANSAKSI =====
+function simpanTransaksi() {
+  const nama = document.getElementById('f-nama').value.trim();
+  const wa = document.getElementById('f-wa').value.trim();
+  const jenis = document.getElementById('f-jenis').value;
+  const berat = parseFloat(document.getElementById('f-berat').value);
+  const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+  const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+  const catatan = document.getElementById('f-catatan').value.trim();
+  const masuk = document.getElementById('f-masuk').value;
+  const estimasi = document.getElementById('f-estimasi').value;
+
+  if (!nama) { toast('⚠️ Nama pelanggan wajib diisi', 'warn'); document.getElementById('f-nama').focus(); return; }
+  if (!jenis) { toast('⚠️ Pilih jenis laundry', 'warn'); return; }
+  if (!berat || berat <= 0) { toast('⚠️ Berat harus diisi', 'warn'); document.getElementById('f-berat').focus(); return; }
+
+  const subtotal = berat * harga;
+  const disc = subtotal * (diskon / 100);
+  const total = subtotal - disc;
+
+  const trx = {
+    id: Date.now(),
+    nama, wa, jenis, berat, harga, diskon,
+    catatan, masuk, estimasi,
+    subtotal, disc, total,
+    status: 'Diproses',
+    createdAt: new Date().toISOString()
+  };
+
+  transactions.unshift(trx);
+  saveData();
+  updateDashboard();
+  renderRecent();
+  toast('✅ Transaksi tersimpan!', 'success');
+  playClick();
+
+  // auto switch ke orders
+  setTimeout(() => switchTabById('orders'), 600);
+}
+
+// ===== DASHBOARD =====
+function updateDashboard() {
+  const total = transactions.length;
+  const revenue = transactions.reduce((s, t) => s + t.total, 0);
+  const processing = transactions.filter(t => t.status === 'Diproses' || t.status === 'Dicuci').length;
+  const done = transactions.filter(t => t.status === 'Selesai' || t.status === 'Diambil').length;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-revenue').textContent = rupiahShort(revenue);
+  document.getElementById('stat-process').textContent = processing;
+  document.getElementById('stat-done').textContent = done;
+}
+
+// ===== RENDER RECENT =====
+function renderRecent() {
+  const tbody = document.getElementById('recent-tbody');
+  const recent = transactions.slice(0, 5);
+  if (recent.length === 0) {
+    document.getElementById('recent-table-wrap').style.display = 'none';
+    document.getElementById('recent-empty').style.display = 'block';
+    return;
+  }
+  document.getElementById('recent-table-wrap').style.display = 'block';
+  document.getElementById('recent-empty').style.display = 'none';
+  tbody.innerHTML = recent.map((t,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td class="td-name">${esc(t.nama)}</td>
+      <td>${esc(t.jenis)}</td>
+      <td>${t.berat} kg</td>
+      <td class="td-total">${rupiah(t.total)}</td>
+      <td>${badgeHtml(t.status)}</td>
+    </tr>
+  `).join('');
+}
+
+// ===== RENDER ORDERS =====
+function renderOrders() {
+  const search = (document.getElementById('search-input').value || '').toLowerCase();
+  const from = document.getElementById('filter-from').value;
+  const to = document.getElementById('filter-to').value;
+
+  let filtered = transactions.filter(t => {
+    // status filter
+    if (activeFilter !== 'all' && t.status !== activeFilter) return false;
+    // date filter
+    if (from && t.masuk < from) return false;
+    if (to && t.masuk > to) return false;
+    // search
+    if (search && !t.nama.toLowerCase().includes(search) && !t.jenis.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('orders-tbody');
+  if (filtered.length === 0) {
+    document.getElementById('orders-table-wrap').style.display = 'none';
+    document.getElementById('orders-empty').style.display = 'block';
+    tbody.innerHTML = '';
+    return;
+  }
+  document.getElementById('orders-table-wrap').style.display = 'block';
+  document.getElementById('orders-empty').style.display = 'none';
+
+  tbody.innerHTML = filtered.map((t,i) => `
+    <tr id="row-${t.id}">
+      <td>${i+1}</td>
+      <td class="td-name">${esc(t.nama)}<br><span style="font-size:11px;color:var(--text3)">${t.masuk}</span></td>
+      <td>${esc(t.jenis)}</td>
+      <td>${t.berat} kg</td>
+      <td class="td-total">${rupiah(t.total)}</td>
+      <td>
+        <select class="status-sel" onchange="updateStatus(${t.id},this.value)">
+          ${['Diproses','Dicuci','Selesai','Diambil'].map(s => `<option value="${s}" ${t.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <div class="act-btns">
+          <button class="act-btn print" onclick="printNotaById(${t.id})" title="Nota">🖨️</button>
+          <button class="act-btn wa" onclick="sendWAById(${t.id})" title="WhatsApp">💬</button>
+          <button class="act-btn del" onclick="hapusTrx(${t.id})" title="Hapus">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ===== FILTER CHIP =====
+function filterChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = el.dataset.status;
+  renderOrders();
+  playClick();
+}
+
+// ===== UPDATE STATUS =====
+function updateStatus(id, status) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  t.status = status;
+  saveData();
+  updateDashboard();
+  renderRecent();
+  toast(`📌 Status diubah: ${status}`, 'info');
+  // auto send WA if selesai
+  if (status === 'Selesai') {
+    toast('💬 Kirim notif WA ke pelanggan?', 'info');
+  }
+}
+
+// ===== HAPUS =====
+function hapusTrx(id) {
+  if (!confirm('Hapus transaksi ini?')) return;
+  transactions = transactions.filter(t => t.id !== id);
+  saveData();
+  renderOrders();
+  updateDashboard();
+  renderRecent();
+  toast('🗑️ Transaksi dihapus', 'warn');
+  playClick();
+}
+
+// ===== WA MESSAGE =====
+function buildWAMsg(t, mode) {
+  // mode: proses | selesai
+  const msg_proses = `Halo ${t.nama} 👋
+
+Terima kasih telah menggunakan *Sakura Laundry* 🌸
+
+*Detail Transaksi:*
+━━━━━━━━━━━━━━
+• Jenis Laundry: *${t.jenis}*
+• Berat: *${t.berat} Kg*
+• Harga/Kg: *${rupiah(t.harga)}*
+• Diskon: *${t.diskon || 0}%*
+• Total: *${rupiah(t.total)}*
+• Tanggal Masuk: *${formatDate(t.masuk)}*
+• Estimasi Selesai: *${t.estimasi}*
+━━━━━━━━━━━━━━
+${t.catatan ? `📝 Catatan: ${t.catatan}\n` : ''}
+Status laundry Anda sedang *diproses* 🔄
+Kami akan konfirmasi kembali saat sudah selesai.
+
+_ありがとうございます_
+*Sakura Laundry* 🌸`;
+
+  const msg_selesai = `Halo ${t.nama} 👋
+
+Laundry Anda sudah *SELESAI* dan siap diambil! ✅🌸
+
+*Detail Transaksi:*
+━━━━━━━━━━━━━━
+• Jenis Laundry: *${t.jenis}*
+• Berat: *${t.berat} Kg*
+• Total Bayar: *${rupiah(t.total)}*
+━━━━━━━━━━━━━━
+Silakan datang untuk mengambil laundry Anda 🙏
+
+_ありがとうございます_
+*Sakura Laundry* 🌸`;
+
+  return mode === 'selesai' ? msg_selesai : msg_proses;
+}
+
+function sendWA(mode) {
+  const nama = document.getElementById('f-nama').value.trim();
+  const wa = document.getElementById('f-wa').value.trim();
+  const jenis = document.getElementById('f-jenis').value;
+  const berat = parseFloat(document.getElementById('f-berat').value) || 0;
+  const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+  const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+  const catatan = document.getElementById('f-catatan').value.trim();
+  const masuk = document.getElementById('f-masuk').value;
+  const estimasi = document.getElementById('f-estimasi').value;
+
+  if (!nama || !wa) { toast('⚠️ Isi nama & nomor WA dulu', 'warn'); return; }
+
+  const subtotal = berat * harga;
+  const disc = subtotal * (diskon/100);
+  const total = subtotal - disc;
+
+  const t = { nama, wa, jenis, berat, harga, diskon, catatan, masuk, estimasi, total };
+  const msg = buildWAMsg(t, mode);
+  const noWA = wa.replace(/\D/g,'');
+  const url = `https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  toast('💬 Membuka WhatsApp...', 'success');
+  playClick();
+}
+
+function sendWAById(id) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
+  const msg = buildWAMsg(t, mode);
+  const noWA = (t.wa || '').replace(/\D/g,'');
+  if (!noWA) { toast('⚠️ Nomor WA tidak ada', 'warn'); return; }
+  window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
+  toast('💬 Membuka WhatsApp...', 'success');
+  playClick();
+}
+
+// ===== COPY WA =====
+function copyWA() {
+  const val = document.getElementById('f-wa').value.trim();
+  if (!val) { toast('⚠️ Nomor WA kosong', 'warn'); return; }
+  navigator.clipboard.writeText(val).then(() => toast('📋 Nomor WA disalin', 'success'));
+  playClick();
+}
+
+// ===== NOTA =====
+function buildNotaData(t) {
+  return t;
+}
+
+function printNota() {
+  const nama = document.getElementById('f-nama').value.trim();
+  const wa = document.getElementById('f-wa').value.trim();
+  const jenis = document.getElementById('f-jenis').value;
+  const berat = parseFloat(document.getElementById('f-berat').value) || 0;
+  const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+  const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+  const catatan = document.getElementById('f-catatan').value.trim();
+  const masuk = document.getElementById('f-masuk').value;
+  const estimasi = document.getElementById('f-estimasi').value;
+
+  if (!nama || !jenis || !berat) { toast('⚠️ Lengkapi form terlebih dahulu', 'warn'); return; }
+
+  const subtotal = berat * harga;
+  const disc = subtotal * (diskon/100);
+  const total = subtotal - disc;
+  const t = { id:null, nama, wa, jenis, berat, harga, diskon, catatan, masuk, estimasi, subtotal, disc, total, status:'Diproses', createdAt: new Date().toISOString() };
+  currentNotaId = null;
+  showNota(t);
+}
+
+function printNotaById(id) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  currentNotaId = id;
+  showNota(t);
+}
+
+function showNota(t) {
+  const el = document.getElementById('nota-content');
+  const noId = t.id ? `#${String(t.id).slice(-6)}` : '#PREVIEW';
+  el.innerHTML = `
+    <div class="nota-header">
+      <div class="nota-jp">桜</div>
+      <div class="nota-brand">Sakura Laundry</div>
+      <div class="nota-tagline">洗濯専門店 · Premium Japanese Laundry</div>
+    </div>
+    <hr class="nota-divider">
+    <div class="nota-row"><span class="lbl">No. Nota</span><span class="val">${noId}</span></div>
+    <div class="nota-row"><span class="lbl">Nama</span><span class="val">${esc(t.nama)}</span></div>
+    ${t.wa ? `<div class="nota-row"><span class="lbl">WhatsApp</span><span class="val">${esc(t.wa)}</span></div>` : ''}
+    <hr class="nota-divider">
+    <div class="nota-row"><span class="lbl">Jenis Laundry</span><span class="val">${esc(t.jenis)}</span></div>
+    <div class="nota-row"><span class="lbl">Berat</span><span class="val">${t.berat} kg</span></div>
+    <div class="nota-row"><span class="lbl">Harga/kg</span><span class="val">${rupiah(t.harga)}</span></div>
+    <div class="nota-row"><span class="lbl">Tanggal Masuk</span><span class="val">${formatDate(t.masuk)}</span></div>
+    <div class="nota-row"><span class="lbl">Estimasi Selesai</span><span class="val">${t.estimasi || '-'}</span></div>
+    ${t.catatan ? `<div class="nota-row"><span class="lbl">Catatan</span><span class="val">${esc(t.catatan)}</span></div>` : ''}
+    <hr class="nota-divider">
+    <div class="nota-row"><span class="lbl">Subtotal</span><span class="val">${rupiah(t.subtotal)}</span></div>
+    <div class="nota-row"><span class="lbl">Diskon (${t.diskon||0}%)</span><span class="val">- ${rupiah(t.disc||0)}</span></div>
+    <div class="nota-total-row"><span>TOTAL BAYAR</span><span class="val">${rupiah(t.total)}</span></div>
+    <div class="nota-footer-text">ありがとうございます</div>
+    <div class="nota-footer-sub">Terima kasih · Sakura Laundry · ${new Date().toLocaleDateString('id-ID')}</div>
+  `;
+  document.getElementById('nota-preview').classList.add('show');
+  playClick();
+}
+
+function closeNota() {
+  document.getElementById('nota-preview').classList.remove('show');
+}
+
+// ===== SAVE NOTA JPG =====
+async function saveNotaJpg() {
+  toast('⏳ Memproses gambar...', 'info');
+  try {
+    await drawNotaCanvas();
+    const canvas = document.getElementById('nota-canvas');
+    canvas.toBlob(blob => {
+      if (!blob) { toast('❌ Gagal membuat gambar', 'warn'); return; }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nota-sakura-${Date.now()}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('💾 Nota berhasil disimpan!', 'success');
+    }, 'image/jpeg', 0.95);
+  } catch(e) {
+    console.error(e);
+    toast('❌ Error: '+e.message, 'warn');
+  }
+}
+
+// ===== SEND NOTA WA =====
+async function sendNotaWa() {
+  // Get current nota data from DOM
+  const id = currentNotaId;
+  let t = null;
+  if (id) {
+    t = transactions.find(x => x.id === id);
+  }
+  if (!t) {
+    // from form
+    const nama = document.getElementById('f-nama').value.trim();
+    const wa = document.getElementById('f-wa').value.trim();
+    const jenis = document.getElementById('f-jenis').value;
+    const berat = parseFloat(document.getElementById('f-berat').value) || 0;
+    const harga = parseFloat(document.getElementById('f-harga').value) || 0;
+    const diskon = parseFloat(document.getElementById('f-diskon').value) || 0;
+    const subtotal = berat * harga;
+    const disc = subtotal * (diskon/100);
+    const total = subtotal - disc;
+    t = { nama, wa, jenis, berat, harga, diskon, subtotal, disc, total, status:'Diproses', masuk: document.getElementById('f-masuk').value, estimasi: document.getElementById('f-estimasi').value, catatan: document.getElementById('f-catatan').value };
+  }
+
+  // Try to send image via WA
+  try {
+    await drawNotaCanvas();
+    const canvas = document.getElementById('nota-canvas');
+    canvas.toBlob(blob => {
+      if (!blob) { fallbackWA(t); return; }
+      // Check Web Share API
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob],'nota.jpg',{type:'image/jpeg'})] })) {
+        const file = new File([blob], `nota-sakura-${Date.now()}.jpg`, { type:'image/jpeg' });
+        navigator.share({ files:[file], title:'Nota Sakura Laundry' }).catch(() => fallbackWA(t));
+      } else {
+        // Fallback: download + open WA
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `nota-sakura.jpg`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        setTimeout(() => fallbackWA(t), 800);
+        toast('💾 Gambar terdownload, buka WA manual', 'info');
+      }
+    }, 'image/jpeg', 0.95);
+  } catch(e) {
+    fallbackWA(t);
+  }
+}
+
+function fallbackWA(t) {
+  const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
+  const msg = buildWAMsg(t, mode);
+  const noWA = (t.wa || '').replace(/\D/g,'');
+  if (noWA) {
+    window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
+  } else {
+    toast('⚠️ Nomor WA tidak tersedia', 'warn');
+  }
+}
+
+// ===== DRAW CANVAS NOTA =====
+async function drawNotaCanvas() {
+  const canvas = document.getElementById('nota-canvas');
+  const W = 400, H = 640;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Get nota data from DOM
+  const notaEl = document.getElementById('nota-content');
+
+  // Background
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, W, H);
+
+  // Red top bar
+  const grad = ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#C62828');
+  grad.addColorStop(1,'#EF5350');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, 6);
+
+  // Pattern dots
+  ctx.fillStyle = 'rgba(198,40,40,0.05)';
+  for (let x=0;x<W;x+=20) for (let y=0;y<H;y+=20) {
+    ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
+  }
+
+  // Header
+  ctx.fillStyle = '#C62828';
+  ctx.font = 'bold 40px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('桜', W/2, 80);
+
+  ctx.fillStyle = '#1A1A1A';
+  ctx.font = 'bold 22px sans-serif';
+  ctx.fillText('Sakura Laundry', W/2, 112);
+
+  ctx.fillStyle = '#888';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('洗濯専門店 · Premium Japanese Laundry', W/2, 132);
+
+  // Divider
+  function dashedLine(y) {
+    ctx.strokeStyle = '#E0E0E0';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6,4]);
+    ctx.beginPath(); ctx.moveTo(20,y); ctx.lineTo(W-20,y); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  dashedLine(150);
+
+  // Parse nota content from HTML
+  const rows = notaEl.querySelectorAll('.nota-row');
+  let y = 175;
+  ctx.textAlign = 'left';
+
+  rows.forEach(row => {
+    const lbl = row.querySelector('.lbl');
+    const val = row.querySelector('.val');
+    if (!lbl || !val) return;
+    ctx.fillStyle = '#666';
+    ctx.font = '12px sans-serif';
+    ctx.fillText(lbl.textContent, 24, y);
+    ctx.fillStyle = '#1A1A1A';
+    ctx.font = '600 12px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(val.textContent, W-24, y);
+    ctx.textAlign = 'left';
+    y += 24;
+    if (y > 560) return;
+  });
+
+  dashedLine(y + 6);
+  y += 24;
+
+  // Total
+  const totalRow = notaEl.querySelector('.nota-total-row');
+  if (totalRow) {
+    const spans = totalRow.querySelectorAll('span');
+    ctx.fillStyle = '#1A1A1A';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText(spans[0]?.textContent || 'TOTAL', 24, y);
+    ctx.fillStyle = '#C62828';
+    ctx.font = 'bold 18px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(spans[1]?.textContent || '', W-24, y);
+    ctx.textAlign = 'left';
+  }
+
+  y += 30;
+  dashedLine(y);
+  y += 30;
+
+  // Footer
+  ctx.fillStyle = '#C62828';
+  ctx.font = '20px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ありがとうございます', W/2, y);
+  y += 22;
+  ctx.fillStyle = '#AAA';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(`Terima kasih · Sakura Laundry · ${new Date().toLocaleDateString('id-ID')}`, W/2, y);
+
+  // Bottom border
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, H-5, W, 5);
+}
+
+// ===== PRINT =====
+function printNotaById(id) {
+  const t = transactions.find(x => x.id === id);
+  if (!t) return;
+  currentNotaId = id;
+  showNota(t);
+}
+
+// ===== CUSTOMER AUTOCOMPLETE =====
+let acFocusIdx = -1;
+
+function getUniqueCustomers() {
+  // Deduplicate by nama (case-insensitive), keep most recent record per customer
+  const map = new Map();
+  [...transactions].reverse().forEach(t => {
+    const key = t.nama.trim().toLowerCase();
+    if (!map.has(key)) {
+      map.set(key, t);
+    }
+  });
+  return Array.from(map.values());
+}
+
+function acSearch(query) {
+  const dd = document.getElementById('ac-dropdown');
+  const q = (query || '').trim();
+  acFocusIdx = -1;
+
+  // Get unique customers
+  const customers = getUniqueCustomers();
+
+  // Filter: show all if empty (recent customers), else filter by name
+  let results;
+  if (q.length === 0) {
+    // Show last 6 unique customers
+    results = customers.slice(0, 6);
+  } else {
+    results = customers.filter(t =>
+      t.nama.toLowerCase().includes(q.toLowerCase())
+    ).slice(0, 8);
+  }
+
+  if (results.length === 0) {
+    if (q.length === 0) {
+      dd.classList.remove('open');
+      return;
+    }
+    dd.innerHTML = `<div class="ac-empty">😔 Tidak ada pelanggan ditemukan</div>`;
+    dd.classList.add('open');
+    return;
+  }
+
+  const header = q.length === 0
+    ? `<div class="ac-header">🕐 Pelanggan Terakhir</div>`
+    : `<div class="ac-header">🔍 Hasil Pencarian</div>`;
+
+  dd.innerHTML = header + results.map((t, i) => {
+    // Count total transactions for this customer
+    const totalTrx = transactions.filter(x => x.nama.toLowerCase() === t.nama.toLowerCase()).length;
+    const avatar = t.nama.trim().charAt(0).toUpperCase();
+
+    // Highlight matching text
+    let displayName = esc(t.nama);
+    if (q.length > 0) {
+      const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+      displayName = esc(t.nama).replace(regex, `<span class="ac-mark">$1</span>`);
+    }
+
+    const lastVisit = formatDate(t.masuk);
+    return `
+      <div class="ac-item" data-idx="${i}" onclick="acSelect('${esc(t.nama)}','${esc(t.wa||'')}')"
+        onmouseenter="acHover(${i})">
+        <div class="ac-avatar">${avatar}</div>
+        <div class="ac-info">
+          <div class="ac-name">${displayName}</div>
+          <div class="ac-meta">📱 ${t.wa || 'Tidak ada WA'} &nbsp;·&nbsp; ${lastVisit}</div>
+        </div>
+        <div class="ac-trx">${totalTrx}×</div>
+      </div>`;
+  }).join('');
+
+  dd.classList.add('open');
+}
+
+function acSelect(nama, wa) {
+  document.getElementById('f-nama').value = nama;
+  document.getElementById('f-wa').value = wa;
+  acClose();
+  // Focus ke jenis laundry berikutnya
+  document.getElementById('f-jenis').focus();
+  toast(`👤 Pelanggan dipilih: ${nama}`, 'success');
+  playClick();
+}
+
+function acHover(idx) {
+  acFocusIdx = idx;
+  document.querySelectorAll('.ac-item').forEach((el, i) => {
+    el.classList.toggle('focused', i === idx);
+  });
+}
+
+function acKeyNav(e) {
+  const dd = document.getElementById('ac-dropdown');
+  if (!dd.classList.contains('open')) return;
+  const items = dd.querySelectorAll('.ac-item');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    acFocusIdx = Math.min(acFocusIdx + 1, items.length - 1);
+    items.forEach((el,i) => el.classList.toggle('focused', i === acFocusIdx));
+    if (items[acFocusIdx]) items[acFocusIdx].scrollIntoView({ block:'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    acFocusIdx = Math.max(acFocusIdx - 1, 0);
+    items.forEach((el,i) => el.classList.toggle('focused', i === acFocusIdx));
+    if (items[acFocusIdx]) items[acFocusIdx].scrollIntoView({ block:'nearest' });
+  } else if (e.key === 'Enter' && acFocusIdx >= 0) {
+    e.preventDefault();
+    if (items[acFocusIdx]) items[acFocusIdx].click();
+  } else if (e.key === 'Escape') {
+    acClose();
+  }
+}
+
+function acClose() {
+  const dd = document.getElementById('ac-dropdown');
+  dd.classList.remove('open');
+  acFocusIdx = -1;
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap')) acClose();
+});
+
+// ===== DARK MODE =====
+function toggleDark() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.querySelector('[onclick="toggleDark()"]').textContent = isDark ? '🌙' : '☀️';
+  toast(isDark ? '☀️ Mode terang' : '🌙 Mode gelap', 'info');
+  playClick();
+}
+
+// ===== TOAST =====
+function toast(msg, type='success') {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  const icons = { success:'✅', warn:'⚠️', info:'ℹ️' };
+  el.innerHTML = `<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  const container = document.getElementById('toast-container');
+  container.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 350);
+  }, 3000);
+}
+
+// ===== SOUND =====
+function playClick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.08);
+  } catch(e) {}
+}
+
+// ===== HELPERS =====
+function rupiah(n) {
+  return 'Rp ' + Math.round(n||0).toLocaleString('id-ID');
+}
+function rupiahShort(n) {
+  if (n >= 1000000) return 'Rp ' + (n/1000000).toFixed(1) + ' Jt';
+  if (n >= 1000) return 'Rp ' + Math.round(n/1000) + ' Rb';
+  return rupiah(n);
+}
+function esc(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function badgeHtml(status) {
+  const map = {
+    'Diproses':'badge-diproses',
+    'Dicuci':'badge-dicuci',
+    'Selesai':'badge-selesai',
+    'Diambil':'badge-diambil'
+  };
+  const icons = { 'Diproses':'🔄','Dicuci':'💦','Selesai':'✅','Diambil':'📦' };
+  return `<span class="badge ${map[status]||''}">${icons[status]||''} ${status}</span>`;
+}
+function formatDate(d) {
+  if (!d) return '-';
+  try {
+    return new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  } catch(e) { return d; }
+}
+</script>
+</body>
+</html>
