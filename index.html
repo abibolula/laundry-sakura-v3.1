@@ -1646,7 +1646,7 @@ function sendWA(mode) {
 
   const t = { nama, wa, jenis, berat, harga, diskon, catatan, masuk, estimasi, total };
   const msg = buildWAMsg(t, mode);
-  const noWA = wa.replace(/\D/g,'');
+  const noWA = cleanWA(wa);
   const url = `https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
   toast('💬 Membuka WhatsApp...', 'success');
@@ -1658,7 +1658,7 @@ function sendWAById(id) {
   if (!t) return;
   const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
   const msg = buildWAMsg(t, mode);
-  const noWA = (t.wa || '').replace(/\D/g,'');
+  const noWA = cleanWA(t.wa);
   if (!noWA) { toast('⚠️ Nomor WA tidak ada', 'warn'); return; }
   window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
   toast('💬 Membuka WhatsApp...', 'success');
@@ -1765,13 +1765,23 @@ async function saveNotaJpg() {
   }
 }
 
+// ===== CLEAN WA NUMBER → format internasional 62xxx =====
+function cleanWA(raw) {
+  let n = (raw || '').replace(/\D/g, ''); // buang semua non-angka
+  if (!n) return '';
+  if (n.startsWith('0')) n = '62' + n.slice(1);   // 08xx  → 628xx
+  else if (n.startsWith('8')) n = '62' + n;        // 8xx   → 628xx
+  // jika sudah 62xx atau lainnya, biarkan
+  return n;
+}
+
 // ===== SEND WA MESSAGE (teks saja) =====
 function sendWAMessage() {
   const t = getCurrentNotaData();
   if (!t) return;
   const mode = (t.status === 'Selesai' || t.status === 'Diambil') ? 'selesai' : 'proses';
   const msg = buildWAMsg(t, mode);
-  const noWA = (t.wa || '').replace(/\D/g,'');
+  const noWA = cleanWA(t.wa);
   if (!noWA) { toast('⚠️ Nomor WA tidak tersedia', 'warn'); return; }
   window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(msg)}`, '_blank');
   toast('💬 Membuka WhatsApp...', 'success');
@@ -1782,7 +1792,7 @@ function sendWAMessage() {
 async function sendInvoiceWA() {
   const t = getCurrentNotaData();
   if (!t) return;
-  const noWA = (t.wa || '').replace(/\D/g,'');
+  const noWA = cleanWA(t.wa);
   if (!noWA) { toast('⚠️ Nomor WA tidak tersedia', 'warn'); return; }
 
   toast('⏳ Membuat invoice JPG...', 'info');
